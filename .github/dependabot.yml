@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # Maven dependencies
+  # Maven dependencies for birthday-reader
   - package-ecosystem: "maven"
     directory: "/birthday-reader"
     schedule:
@@ -8,14 +8,11 @@ updates:
       day: "monday"
       time: "03:00"
     open-pull-requests-limit: 5
-    reviewers:
-      - "hoang"
-    assignees:
-      - "hoang"
     labels:
       - "dependencies"
       - "maven"
   
+  # Maven dependencies for birthday-mailer
   - package-ecosystem: "maven"
     directory: "/birthday-mailer"
     schedule:
@@ -23,10 +20,6 @@ updates:
       day: "monday"
       time: "03:30"
     open-pull-requests-limit: 5
-    reviewers:
-      - "hoang"
-    assignees:
-      - "hoang"
     labels:
       - "dependencies"
       - "maven"
@@ -39,8 +32,6 @@ updates:
       day: "monday"
       time: "04:00"
     open-pull-requests-limit: 3
-    reviewers:
-      - "hoang"
     labels:
       - "dependencies"
       - "docker"
@@ -53,8 +44,6 @@ updates:
       day: "tuesday"
       time: "03:00"
     open-pull-requests-limit: 5
-    reviewers:
-      - "hoang"
     labels:
       - "dependencies"
       - "github-actions"
