@@ -11,7 +11,7 @@ env:
   DOCKER_USERNAME: anhhvq
 
 jobs:
-  # ----------------- CHẶNG 1: RUN UNIT TESTS -----------------
+  # ----------------- 1: RUN UNIT TESTS -----------------
   test:
     name: Run Tests
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
           name: test-results-${{ matrix.service }}
           path: ${{ matrix.service }}/target/surefire-reports/
 
-  # ----------------- CHẶNG 2: BUILD DOCKER IMAGES -----------------
+  # ----------------- 2: BUILD DOCKER IMAGES -----------------
   build:
     name: Build Docker Images
     runs-on: ubuntu-latest
@@ -91,7 +91,7 @@ jobs:
       - name: Image digest
         run: echo ${{ steps.meta.outputs.digest }}
 
-  # ----------------- CHẶNG 3: INTEGRATION TESTS -----------------
+  # ----------------- 3: INTEGRATION TESTS -----------------
   integration-test:
     name: Integration Tests
     runs-on: ubuntu-latest
@@ -159,7 +159,7 @@ jobs:
           mvn -f birthday-reader/pom.xml test -q
           mvn -f birthday-mailer/pom.xml test -q
 
-  # ----------------- CHẶNG 4: NOTIFY STATUS -----------------
+  # ----------------- 4: NOTIFY STATUS -----------------
   notify:
     name: Notify Status
     runs-on: ubuntu-latest
