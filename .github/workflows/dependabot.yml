@@ -14,9 +14,14 @@ jobs:
     if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot'
     
     steps:
+      # 1. THÊM BƯỚC NÀY: Khởi tạo Git repository để tránh lỗi "not a git repository"
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. CẬP NHẬT: Lên v2 để hết cảnh báo Node.js 20 bị deprecated
       - name: Dependabot metadata
         id: metadata
-        uses: dependabot/fetch-metadata@v1
+        uses: dependabot/fetch-metadata@v2
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
       
