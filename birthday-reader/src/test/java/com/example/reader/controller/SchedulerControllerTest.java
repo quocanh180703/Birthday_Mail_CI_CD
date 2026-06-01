@@ -23,7 +23,7 @@ public class SchedulerControllerTest {
     private BirthdayScheduler birthdayScheduler;
 
     @Test
-    @DisplayName("Should run scheduler manually and return success message")
+    @DisplayName("Should run scheduler manually and return structured JSON")
     public void testRunManually_Success() throws Exception {
         // Arrange
         when(birthdayScheduler.triggerJob()).thenReturn(3);
@@ -31,7 +31,11 @@ public class SchedulerControllerTest {
         // Act & Assert
         mockMvc.perform(post("/api/scheduler/run"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Manual scheduler run completed. Published 3 messages."));
+                .andExpect(content().contentTypeCompatibleWith("application/json"))
+                .andExpect(jsonPath("$.status").value("SUCCESS"))
+                .andExpect(jsonPath("$.message").value("Manual trigger completed"))
+                .andExpect(jsonPath("$.publishedCount").value(3))
+                .andExpect(jsonPath("$.triggeredAt").exists());
 
         verify(birthdayScheduler).triggerJob();
     }
@@ -45,7 +49,7 @@ public class SchedulerControllerTest {
         // Act & Assert
         mockMvc.perform(post("/api/scheduler/run"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Manual scheduler run completed. Published 0 messages."));
+                .andExpect(jsonPath("$.publishedCount").value(0));
 
         verify(birthdayScheduler).triggerJob();
     }
@@ -58,7 +62,8 @@ public class SchedulerControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/api/scheduler/run"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("SUCCESS"));
 
         verify(birthdayScheduler, times(1)).triggerJob();
     }
@@ -72,7 +77,7 @@ public class SchedulerControllerTest {
         // Act & Assert
         mockMvc.perform(post("/api/scheduler/run"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("text/plain;charset=UTF-8"));
+                .andExpect(content().contentTypeCompatibleWith("application/json"));
     }
 
     @Test
@@ -84,6 +89,6 @@ public class SchedulerControllerTest {
         // Act & Assert
         mockMvc.perform(post("/api/scheduler/run"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Manual scheduler run completed. Published 1000 messages."));
+                .andExpect(jsonPath("$.publishedCount").value(1000));
     }
 }

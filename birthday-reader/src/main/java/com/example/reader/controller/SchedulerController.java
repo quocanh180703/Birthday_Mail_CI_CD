@@ -1,6 +1,7 @@
 package com.example.reader.controller;
 
 import com.example.reader.scheduler.BirthdayScheduler;
+import java.time.LocalDateTime;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +17,21 @@ public class SchedulerController {
     }
 
     @PostMapping("/run")
-    public ResponseEntity<String> runManually() {
+    public ResponseEntity<ManualTriggerResponse> runManually() {
         int published = birthdayScheduler.triggerJob();
-        return ResponseEntity.ok("Manual scheduler run completed. Published " + published + " messages.");
+        return ResponseEntity.ok(new ManualTriggerResponse(
+                "SUCCESS",
+                "Manual trigger completed",
+                published,
+                LocalDateTime.now()
+        ));
+    }
+
+    public record ManualTriggerResponse(
+            String status,
+            String message,
+            int publishedCount,
+            LocalDateTime triggeredAt
+    ) {
     }
 }

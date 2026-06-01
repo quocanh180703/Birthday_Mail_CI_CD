@@ -34,6 +34,29 @@ java -jar birthday-mailer/target/birthday-mailer-0.0.1-SNAPSHOT.jar
 curl -F "file=@employees.xlsx" http://localhost:8080/api/upload
 ```
 
+## Profiles
+
+- `dev`: use for local Docker Compose or local development with the built-in service names (`rabbitmq`, `mysql`) and fixed ports (`8080`, `8081`).
+- `uat`: use for UAT/staging by supplying environment variables for RabbitMQ, SMTP, and MySQL.
+
+Example run commands:
+
+```bash
+java -jar birthday-reader/target/birthday-reader-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+java -jar birthday-mailer/target/birthday-mailer-0.0.1-SNAPSHOT.jar --spring.profiles.active=uat
+```
+
+Example UAT environment variables for mailer:
+
+```bash
+SPRING_PROFILES_ACTIVE=uat
+SPRING_RABBITMQ_HOST=your-rabbitmq-host
+SPRING_MAIL_HOST=smtp.your-company.com
+SPRING_DATASOURCE_URL=jdbc:mysql://your-mysql-host:3306/mail_record
+SPRING_DATASOURCE_USERNAME=...
+SPRING_DATASOURCE_PASSWORD=...
+```
+
 ## Testing
 
 This project includes comprehensive unit tests (22 tests total) for professional capstone/thesis quality:
