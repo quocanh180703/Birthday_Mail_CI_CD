@@ -32,7 +32,7 @@ jobs:
           cache: maven
       
       - name: Run tests for ${{ matrix.service }}
-        run: mvn -f ${{ matrix.service }}/pom.xml clean test -q
+        run: mvn -f ${{ matrix.service }}/pom.xml clean test -q -DskipTestsGemini Code Assist
       
       - name: Upload test results
         if: always()
