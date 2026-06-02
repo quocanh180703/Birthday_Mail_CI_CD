@@ -32,7 +32,7 @@ jobs:
           cache: maven
       
       - name: Run tests for ${{ matrix.service }}
-        run: mvn -f ${{ matrix.service }}/pom.xml clean test -q -DskipTestsGemini Code Assist
+        run: mvn -f ${{ matrix.service }}/pom.xml clean test -q
       
       - name: Upload test results
         if: always()
@@ -84,7 +84,7 @@ jobs:
           context: ./${{ matrix.service }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.outputs.labels }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ matrix.service }}:buildcache
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ matrix.service }}:buildcache,mode=max
       
@@ -168,15 +168,21 @@ jobs:
     steps:
       - name: Check build status
         run: |
-          # Kiểm tra xem có bất kỳ job nào thực sự bị thất bại (failure) hay không
-          if [ "${{ needs.test.result }}" = "failure" ] || [ "${{ needs.build.result }}" = "failure" ] || [ "${{ needs.integration-test.result }}" = "failure" ]; then
-            echo "::error::CI/CD Pipeline failed! Check logs for details."
+          # 1. Kiểm tra nếu JOB TEST bị lỗi (Áp dụng cho cả Push và PR)
+          if [ "${{ needs.test.result }}" = "failure" ] || [ "${{ needs.test.result }}" = "cancelled" ]; then
+            echo "::error::CI/CD Pipeline failed tại bước Unit Tests!"
             exit 1
           fi
           
-          # Đưa ra thông báo linh hoạt dựa vào việc các job sau có chạy hay không
+          # 2. Kiểm tra nếu các bước Build hoặc Integration Test bị lỗi khi Push
+          if [ "${{ needs.build.result }}" = "failure" ] || [ "${{ needs.integration-test.result }}" = "failure" ]; then
+            echo "::error::CI/CD Pipeline failed tại bước Build Docker hoặc Integration Tests!"
+            exit 1
+          fi
+          
+          # 3. Đưa ra thông báo thành công tương ứng
           if [ "${{ needs.build.result }}" = "success" ]; then
-            echo "::notice::✓ Toàn bộ quá trình Tests và Build thành công, Docker image đã đồng bộ lên Hub!"
+            echo "::notice::✓ Toàn bộ quá trình Tests, Build Docker và Integration Tests thành công!"
           else
-            echo "::notice::✓ PR Checks hoàn tất: Unit Tests của các service đều vượt qua!"
+            echo "::notice::✓ PR Checks hoàn tất: Toàn bộ Unit Tests của các service đều vượt qua!"
           fi
