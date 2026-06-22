@@ -1,6 +1,6 @@
 package com.example.mailer.util;
 
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,7 +55,7 @@ class EmailUtilsTest {
     @DisplayName("buildHtmlMessage — không có ảnh — tạo MimeMessage thành công")
     void buildHtmlMessage_withoutImage_createsMimeMessage() throws Exception {
         // Dùng session thật của JavaMail để MimeMessageHelper có thể setTo/setSubject
-        javax.mail.Session session = javax.mail.Session.getDefaultInstance(new java.util.Properties());
+        jakarta.mail.Session session = jakarta.mail.Session.getDefaultInstance(new java.util.Properties());
         MimeMessage realMsg = new MimeMessage(session);
         
         // CHỈ GIỮ LẠI DÒNG MOCK NÀY:
@@ -79,7 +79,7 @@ class EmailUtilsTest {
         File img = tempDir.resolve("photo.png").toFile();
         img.createNewFile();
 
-        javax.mail.Session session = javax.mail.Session.getDefaultInstance(new java.util.Properties());
+        jakarta.mail.Session session = jakarta.mail.Session.getDefaultInstance(new java.util.Properties());
         MimeMessage realMsg = new MimeMessage(session);
         when(mailSender.createMimeMessage()).thenReturn(realMsg);
 
