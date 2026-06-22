@@ -6,7 +6,7 @@ import com.example.mailer.exception.MailSendException;
 import com.example.mailer.model.Employee;
 import com.example.mailer.repository.MailRecordRepository;
 import com.example.mailer.service.IMailService;
-import jakarta.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;

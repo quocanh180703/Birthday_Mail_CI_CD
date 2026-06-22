@@ -6,7 +6,7 @@ import com.example.mailer.exception.MailSendException;
 import com.example.mailer.model.Employee;
 import com.example.mailer.repository.MailRecordRepository;
 import com.example.mailer.service.impl.MailServiceImpl;
-import jakarta.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

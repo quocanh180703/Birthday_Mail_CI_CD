@@ -1,6 +1,6 @@
 package com.example.mailer.util;
 
-import jakarta.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,6 @@ import static org.mockito.Mockito.*;
 class EmailUtilsTest {
 
     @Mock JavaMailSender mailSender;
-    @Mock MimeMessage mimeMessage;
 
     // ─── hasValidImage ────────────────────────────────────────────────────────
 
@@ -55,12 +54,11 @@ class EmailUtilsTest {
     @Test
     @DisplayName("buildHtmlMessage — không có ảnh — tạo MimeMessage thành công")
     void buildHtmlMessage_withoutImage_createsMimeMessage() throws Exception {
-        when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
-        // when(mimeMessage.getDataHandler()).thenReturn(null);
-
         // Dùng session thật của JavaMail để MimeMessageHelper có thể setTo/setSubject
-        jakarta.mail.Session session = jakarta.mail.Session.getDefaultInstance(new java.util.Properties());
+        javax.mail.Session session = javax.mail.Session.getDefaultInstance(new java.util.Properties());
         MimeMessage realMsg = new MimeMessage(session);
+        
+        // CHỈ GIỮ LẠI DÒNG MOCK NÀY:
         when(mailSender.createMimeMessage()).thenReturn(realMsg);
 
         MimeMessage result = EmailUtils.buildHtmlMessage(
@@ -81,7 +79,7 @@ class EmailUtilsTest {
         File img = tempDir.resolve("photo.png").toFile();
         img.createNewFile();
 
-        jakarta.mail.Session session = jakarta.mail.Session.getDefaultInstance(new java.util.Properties());
+        javax.mail.Session session = javax.mail.Session.getDefaultInstance(new java.util.Properties());
         MimeMessage realMsg = new MimeMessage(session);
         when(mailSender.createMimeMessage()).thenReturn(realMsg);
 
