@@ -1,28 +1,26 @@
 package com.example.mailer.listener;
 
 import com.example.mailer.model.Employee;
-import com.example.mailer.service.MailService;
+import com.example.mailer.service.IMailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("EmployeeListener Tests")
 public class EmployeeListenerTest {
 
     @Mock
-    private MailService mailService;
+    private IMailService mailService;
 
     private EmployeeListener employeeListener;
     private ObjectMapper objectMapper;
@@ -44,7 +42,6 @@ public class EmployeeListenerTest {
         employeeListener.receive(jsonPayload);
 
         // Assert
-        // The listener processes the message (implementation may vary)
         assertThat(jsonPayload).contains("João Silva");
     }
 
@@ -61,7 +58,7 @@ public class EmployeeListenerTest {
     }
 
     @Test
-    @DisplayName("Should have MailService dependency")
+    @DisplayName("Should have IMailService dependency")
     public void testMailServiceInjection() {
         assertThat(employeeListener).isNotNull();
     }

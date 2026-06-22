@@ -25,6 +25,9 @@ public class MailRecord {
 
     private int attempts;
 
+    // Tài khoản SMTP đã thực hiện gửi mail
+    private String sentBy;
+
     private String lastError;
 
     private LocalDateTime createdAt = LocalDateTime.now();
