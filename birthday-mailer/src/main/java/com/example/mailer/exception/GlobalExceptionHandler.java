@@ -12,6 +12,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Địa chỉ email không hợp lệ (định dạng sai hoặc domain không có MX record)
+    @ExceptionHandler(InvalidEmailException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidEmail(InvalidEmailException ex) {
+        log.warn("Email không hợp lệ: {}", ex.getEmail());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponse.of(400, "Bad Request", ex.getMessage()));
+    }
+
     // Status không hợp lệ (PENDING / SENT / FAILED)
     @ExceptionHandler(InvalidMailStatusException.class)
     public ResponseEntity<ErrorResponse> handleInvalidStatus(InvalidMailStatusException ex) {
